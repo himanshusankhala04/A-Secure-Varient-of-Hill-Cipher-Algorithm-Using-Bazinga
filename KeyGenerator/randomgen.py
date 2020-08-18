@@ -14,12 +14,7 @@ dic2 = dict(zip(range(len(characters)), characters))
 
 
 def matrix_mod_inv(matrix, modulus):
-    """We find the matrix modulus inverse by
-    Step 1) Find determinant
-    Step 2) Find determinant value in a specific modulus (usually length of alphabet)
-    Step 3) Take that det_inv times the det*inverted matrix (this will then be the adjoint) in mod 26
-    """
-
+ 
     det = int(np.round(np.linalg.det(matrix)))  # Step 1)
     det_inv = egcd(det, modulus)[1] % modulus  # Step 2)
     matrix_modulus_inv = (
