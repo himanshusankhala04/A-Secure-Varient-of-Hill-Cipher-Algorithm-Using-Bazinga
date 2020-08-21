@@ -14,9 +14,17 @@ dic2 = dict(zip(range(len(characters)), characters))
 
 
 def matrix_mod_inv(matrix, modulus):
+<<<<<<< HEAD
+    det = int(np.round(np.linalg.det(matrix)))
+    det_inv = egcd(det, modulus)[1] % modulus
+    matrix_modulus_inv = (
+        det_inv * np.round(det * np.linalg.inv(matrix)).astype(int) % modulus
+    )
+=======
     det = int(np.round(np.linalg.det(matrix)))  
     det_inv = egcd(det, modulus)[1] % modulus  
     matrix_modulus_inv = (det_inv * np.round(det * np.linalg.inv(matrix)).astype(int) % modulus)  
+>>>>>>> 112c4a9d87f4bde2c0e1956a59b6bbe630ecd474
 
     return matrix_modulus_inv
 
@@ -26,7 +34,6 @@ def dictGen():
     return characters,dic1,dic2
 
 def keyGen():
-
     klen = secretsGenerator.choice(range(4,7)) #select  random key length between[4,5,6]
     flag = True #key checker
 
@@ -78,32 +85,44 @@ def keyGen():
 
 
 
-def msgpadding(msg,k):
 
+def msgpadding(msg,k,flag):
     paddpattern = []
     #padding pattern selector
-    for i in range(len(k[0])):
-        paddpattern.append(min(k[i]))
+
+    val = abs(int(np.round(np.linalg.det(k))))
+
+    if flag == 1:
+        Kinv = matrix_mod_inv(k, 89)
+        val =np.sum(Kinv)
+
+
+    while(val>0):
+        paddpattern.append((val%10))
+        val=int(val/10)
+    paddpattern.sort()
+    
 
     c = 0
     ms = 0 #message pointer
 
     #padding into message
-    while ms+(paddpattern[c]%10) < len(msg):
+    while ms+(paddpattern[c]) < len(msg):
         padd = ""
 
-        if ms+(paddpattern[c]%10) == 0:
-            for i in range(dic1[msg[ms+(paddpattern[c]%10)]] % len(k[0])):
+        if ms+(paddpattern[c]) == 0:
+            for i in range(dic1[msg[ms+(paddpattern[c])]] % 10):
                 padd += secretsGenerator.choice(l1) #creating padding strng randomly
 
             msg = msg[0] + padd + msg[1:]
             ms += 1 + len(padd) #incrementing pointer
 
         else:
-            for i in range(dic1[msg[ms+(paddpattern[c]%10)-1]] % len(k[0])):
+
+            for i in range((dic1[msg[ms+(paddpattern[c])-1]] % 10)):
                 padd += secretsGenerator.choice(l1) #creating padding strng randomly
 
-            msg = msg[0:ms+(paddpattern[c]%10)] + padd + msg[ms+(paddpattern[c]%10):]
+            msg = msg[0:ms+(paddpattern[c])] + padd + msg[ms+(paddpattern[c]):]
             ms += (paddpattern[c]%10) + len(padd) #incrementing pointer
         c += 1
         if c == len(paddpattern):
@@ -111,26 +130,36 @@ def msgpadding(msg,k):
 
     return msg
 
-def msgpaddremoving(paddmsg,k):
+def msgpaddremoving(paddmsg,k,flag):
     paddpattern = []
     #padding pattern selector
-    for i in range(len(k[0])):
-        paddpattern.append(min(k[i]))
 
+    val = abs(int(np.round(np.linalg.det(k))))
+
+    if flag == 1:
+        Kinv = matrix_mod_inv(k, 89)
+        val =np.sum(Kinv)
+
+    while(val>0):
+        paddpattern.append((val%10))
+        val=int(val/10)
+    paddpattern.sort()
     c = 0
     ms = 0 #padded message pointer
     msg = ""
     #padding removing
-    while ms+(paddpattern[c]%10) < len(paddmsg) :
+    while ms+(paddpattern[c]) < len(paddmsg) :
 
-        if ms+(paddpattern[c]%10) == 0:
-            val = dic1[paddmsg[0]] % len(k[0])
+        if ms+(paddpattern[c]) == 0:
+            val = dic1[paddmsg[0]]%10
             msg += paddmsg[0]
             ms += val +1 #incrementing pointer
         else:
-            val = dic1[paddmsg[(ms+(paddpattern[c]%10))-1]] % len(k[0])
-            msg += paddmsg[ms:ms+(paddpattern[c]%10)]
-            ms += (paddpattern[c]%10) + val #incrementing pointer
+
+
+            val = dic1[paddmsg[(ms+(paddpattern[c]))-1]]%10
+            msg += paddmsg[ms:ms+(paddpattern[c])]
+            ms += (paddpattern[c]) + val #incrementing pointer
 
         c += 1
         if c == len(paddpattern):

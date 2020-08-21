@@ -27,11 +27,15 @@ def encryption(key, text, tfname):
     #list to matrix
     K = np.matrix(key)
 
-    encrypted_message = h.encrypt(text, K)
-    padded_message = r.msgpadding(encrypted_message,key)
+    padded_text = r.msgpadding(text,K,0)
+    encrypted_message = h.encrypt(padded_text, K)
+
+    padded_message = r.msgpadding(encrypted_message,K,1)
     binary_message = bn.str2bits(padded_message)
     buzz = bn.bazi(binary_message,key)
+    buzz = bn.baziPRO(buzz,key)
     tfname += "enc.txt"
+
     #saving into file
     with open(tfname, 'w') as file:
         file.write(buzz)
@@ -46,12 +50,14 @@ def decryption(key,text,tfname):
     Kinv = r.matrix_mod_inv(K, 89)
     Kinv = np.matrix(Kinv)
 
-    buzz = bn.bazi(text,key)
+    buzz = bn.baziPRO(text,key)
+    buzz = bn.bazi(buzz,key)
     string_message = bn.bit2str(buzz)
-    unpadded_message =  r.msgpaddremoving(string_message,key)
+    unpadded_message =  r.msgpaddremoving(string_message,K,1)
     decrypted_message = h.decrypt(unpadded_message, Kinv)
+    message = r.msgpaddremoving(decrypted_message,K,0)
     tfname += "dec.txt"
 
     #saving into file
     with open(tfname, 'w') as file:
-        file.write(decrypted_message)
+        file.write(message)

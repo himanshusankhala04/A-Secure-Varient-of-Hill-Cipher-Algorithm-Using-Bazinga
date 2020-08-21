@@ -9,6 +9,9 @@ def str2bits(s):
 def bazi(s,k):
     return buzz.bazingaAlgo(s,k)
 
+def baziPRO(s,k):
+    return buzz.bazingaAlgoPRO(s,k)
+
 #bit to string convertion
 def bit2str(b):
     lis = []
