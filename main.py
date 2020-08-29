@@ -23,22 +23,28 @@ def keyFormat(key):
 
 def encryption(key, text, tfname):
     key = keyFormat(key)
-
+    print(key)
     #list to matrix
     K = np.matrix(key)
 
     padded_text = r.msgpadding(text,K,0)
+    print(padded_text,"\n")
     encrypted_message = h.encrypt(padded_text, K)
-
+    print(encrypted_message,"\n")
     padded_message = r.msgpadding(encrypted_message,K,1)
+    print(padded_message,"\n")
     binary_message = bn.str2bits(padded_message)
+    print(binary_message,"\n")
     buzz = bn.bazi(binary_message,key)
+    print(buzz,"\n")
     buzz = bn.baziPRO(buzz,key)
+    print(buzz,"\n")
+    final = bn.bit2hexa(buzz)
     tfname += "enc.txt"
 
     #saving into file
     with open(tfname, 'w') as file:
-        file.write(buzz)
+        file.write(final)
 
 
 def decryption(key,text,tfname):
@@ -50,7 +56,9 @@ def decryption(key,text,tfname):
     Kinv = r.matrix_mod_inv(K, 89)
     Kinv = np.matrix(Kinv)
 
-    buzz = bn.baziPRO(text,key)
+    hex_bin = bn.hexa2bit(text)
+    print(hex_bin)
+    buzz = bn.baziPRO(hex_bin,key)
     buzz = bn.bazi(buzz,key)
     string_message = bn.bit2str(buzz)
     unpadded_message =  r.msgpaddremoving(string_message,K,1)
