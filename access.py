@@ -5,18 +5,15 @@ from Alteration import bazinga as buzz
 import time
 
 
-
-
-def display(fn,y):
+def display(fn):
 	fn += ".txt"
 	try:
 		with open(fn, 'r') as file:
 			text = file.read()
-		if y == "e":
-			#print("\n" + bn.kbit2str(text))
-			print("\n" + text)
-		elif y == "d":
-			print("\n" + text)
+			print()
+			print("*"*len(text))
+			print(text)
+			print("*"*len(text))
 	except IOError:
 		print("file not!found")
 
@@ -26,11 +23,8 @@ while True:
 	1. Encryption
 	2. Decryption
 	3. Key generation
-	4. Display encription file
-	5. Display decryption file
-	6. Display plain text file
-	7. Display key from key file
-	8. Exit
+	4. Display txt file
+	5. Exit
 	""")
 
 	ch = input("Enter your choice : ")
@@ -64,6 +58,8 @@ while True:
 
 		textfile = input("\nEnter text filename to be encrypted: ")
 		textfile += ".txt"
+
+		start = time.time()
 		try:
 			with open(textfile, 'r+') as file:
 				text = file.read()
@@ -74,10 +70,13 @@ while True:
 		h.encryption(key,text,textfile[:-4])
 		print("Encryption completed!")
 		print("File is saved as "+textfile[:-4]+"enc.txt" )
+		end = time.time()-start
+		print("Time required : ",end)
 
 	elif ch == "2":
 		kfile = input("\nEnter Key filename: ")
 		kfile += ".txt"
+
 		try:
 			with open(kfile, 'r') as file:
 				key = file.read()
@@ -90,41 +89,29 @@ while True:
 		except IOError:
 			print("file not found")
 			continue
-
+		st = time.time()
 		h.decryption(key,text,textfile[:-4])
 		print("Decryption completed!")
 		print("File is saved as "+textfile[:-4]+"dec.txt" )
+		en = time.time() - st
+		print("Time required : ",en)
+
 	elif ch == "3":
 		kfname = input("Enter Key filename: ")
 		kfname += ".txt"
 
 		key = re.keyGen()
 		print("Key Generated!")
+		print("Key saved as "+kfname)
 
 		with open(kfname, 'w') as file:
 			file.write(key)
 
 	elif ch == "4":
 		fn = input("Enter file name: ")
-		display(fn,"e")
+		display(fn)
 
 	elif ch == "5":
-		fn = input("Enter file name: ")
-		display(fn,"d")
-
-	elif ch == "6":
-		fn = input("Enter file name: ")
-		display(fn,"d")
-
-	elif ch == "7":
-		fn = input("Enter key file name: ")
-		x = process(fn)
-		if x == -1:
-			print('file not found')
-			continue
-		print(x)
-
-	elif ch == "8":
 		break
 	else:
 		print("Wrong choice!")
