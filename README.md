@@ -11,9 +11,9 @@ Program divided into parts:<br/>
   A)Pre-Padding <br/>
   B) Traditional Hill Cipher<br/>
   C)  Post Padding<br/>
-  D) Binary Converter :<br/>
-  E)  Bazinga Level 1 :<br/>
-  F)  Bazinga Level - 2:<br/>
+  D) Binary Converter <br/>
+  E)  Bazinga Level 1 <br/>
+  F)  Bazinga Level - 2<br/>
 3  Decryption<br/>
 
 
