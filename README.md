@@ -13,7 +13,7 @@ Program divided into parts:<br/>
   C)  Post Padding<br/>
   D) Binary Converter <br/>
   E)  Bazinga Level 1 <br/>
-  F)  Bazinga Level - 2<br/>
+  F)  Bazinga Level 2<br/>
 3  Decryption<br/>
 
 
